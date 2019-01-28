@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		#ending{
+			position: fixed;
+			bottom: 0;
+			font-size: 30px;
+		}
+
+		#collect{
+			position: fixed;
+			bottom: 30px;
+			font-size: 30px;
+		}
+
+		#end{
+			position: fixed;
+			bottom: 60px;
+			font-size: 30px;
+		}
+
+		.line{
+			text-decoration: line-through;
+			cursor: disabled;
+		}
+
+		.blue{
+			color: blue;
+		}
+		.subone, .subtwo, .subthree, .subfour ,.none{
+			cursor: pointer;
+			font-size: 20px;
+			margin: 10px ;
+		}
+
+
+	</style>
+</head>
+<body>
+	<h1 class="none">밀실 탈출기</h1>
+	<p onclick="main()" class="none">시작하기</p>
+	<h1 class="main"></h1>
+	<p onclick="one()" class="subone"></p>
+	<p onclick="two()" class="subtwo"></p>
+	<p onclick="three()" class="subthree"></p>
+	<p onclick="four()" class="subfour"></p>
+	<h3 class="restart" onclick="main()"></h3>
+	<p class="collect" id="collect"></p>
+	<p class="ending" id="ending"></p>
+	<h3 class="end" id="end"></h3>
+
+	<script src="jquery-3.2.1.js"></script>
+	<script>
+		
+			var button = 0, // 발판 문을 여는
+				key = 0,  // 문을 여는
+				stick = 0,  // 개에게 던질때 특수 선택지
+				telescope = 0,  // 나무위에서 볼 수 있는
+				endcount = [0,0,0,0,0,0,0,0,0,0];
+
+
+		function main(){
+			button = 0,
+			key = 0,
+			stick = 0,
+			telescope = 0;
+
+			$('.none').hide();
+			$('.restart').html('');
+			$('.collect').html('');
+			$('.main').html('당신은 주변이 보이지 않는 밀실에 있는듯 하다. 무엇을 할까?');
+			$('.subone').html('1. 뒤로간다');
+			$('.subtwo').html('2. 앞으로 간다');
+			$('.subthree').html('3. 그대로 멈춘다').removeClass('line');
+
+			$('.subone').removeAttr("onclick");
+			$('.subone').attr("onclick","one()");
+
+			$('.subtwo').removeAttr("onclick");
+			$('.subtwo').attr("onclick","two()");
+
+			$('.subthree').removeAttr("onclick");
+			$('.subthree').attr("onclick","three()");
+		}
+
+		function one(){
+			$('.main').html('뒤로 갔더니 등이 벽에 닿았다. 무엇을 할까?');
+			if(button >= 1 ){
+				$('.subone').html('1. 오른쪽으로 간다');
+				$('.subtwo').html('2. 왼쪽으로 간다');
+				$('.subthree').html('3. 다시 앞으로 간다');
+				$('.subfour').html('4.(히든 선택지) 뒤로 간다').addClass('blue');
+
+				$('.subone').removeAttr("onclick");
+				$('.subone').attr("onclick","one_one()");
+
+				$('.subtwo').removeAttr("onclick");
+				$('.subtwo').attr("onclick","one_two()");
+
+				$('.subthree').removeAttr("onclick");
+				$('.subthree').attr("onclick","one_three()");
+
+				$('.subfour').removeAttr("onclick");
+				$('.subfour').attr("onclick","hiddenEnding()");
+			} else{
+				$('.subone').html('1. 오른쪽으로 간다');
+				$('.subtwo').html('2. 왼쪽으로 간다');
+				$('.subthree').html('3. 다시 앞으로 간다');
+
+				$('.subone').removeAttr("onclick");
+				$('.subone').attr("onclick","one_one()");
+
+				$('.subtwo').removeAttr("onclick");
+				$('.subtwo').attr("onclick","one_two()");
+
+				$('.subthree').removeAttr("onclick");
+				$('.subthree').attr("onclick","one_three()");
+
+			}
+		}
+
+
+		function one_one(){
+			telescope += 1;
+			$('.main').html('땅바닥에 망원경이 떨어져 있다.');
+			$('.subone').html('1. 줍는다');
+			$('.subtwo').html('');
+			$('.subthree').html('');
+			$('.subfour').html('').removeClass('blue');
+		if(telescope == 1){
+			$('.collect').append('telescope, ');
+		}
+			$('.subone').removeAttr("onclick");
+			$('.subone').attr("onclick","one()");
+
+			$('.subtwo').removeAttr("onclick");
+
+			$('.subthree').removeAttr("onclick");
+		}
+
+		function one_two(){
+			stick += 1;
+			$('.main').html('땅바닥에 막대기가 떨어져 있다.');
+			$('.subone').html('1. 줍는다');
+			$('.subtwo').html('');
+			$('.subthree').html('');
+			$('.subfour').html('').removeClass('blue');
+		if(stick == 1){
+			$('.collect').append('stick, ');
+		}
+			$('.subone').removeAttr("onclick");
+			$('.subone').attr("onclick","one()");
+
+			$('.subtwo').removeAttr("onclick");
+
+			$('.subthree').removeAttr("onclick");
+		}
+
+		function two(){
+			$('.main').html('앞으로 갔더니 문이 있다는 것을 당신은 직감으로 알아챈다. 무엇을 할까?');
+			if(key == 0){
+			$('.subone').html('1. 문을 열어본다');
+			$('.subtwo').html('2. 뒤로 돌아간다');
+			$('.subthree').html('3. 바닥을 뒤져본다');
+
+			$('.subone').removeAttr("onclick");
+			$('.subone').attr("onclick","two_one()");
+
+			$('.subtwo').removeAttr("onclick");
+			$('.subtwo').attr("onclick","one_three()");
+
+			$('.subthree').removeAttr("onclick");
+			$('.subthree').attr("onclick","two_one_three()");
+		}else{
+			$('.main').html('문이 열린다. 무엇을 할까?');
+			$('.subone').html('1. 들어간다');
+			$('.subtwo').html('2. 뒤로 간다');
+			$('.subthree').html('');
+
+			$('.subone').removeAttr("onclick");
+			$('.subone').attr("onclick","two_one_one_one()");
+
+			$('.subtwo').removeAttr("onclick");
+			$('.subtwo').attr("onclick","one_three()");
+
+			$('.subthree').removeAttr("onclick");
+		}
+		}
+
+		function three(){
+			$('.main').html('가만히 있어도 변하는 것은 없는듯 하다. 무엇을 할까?');
+			$('.subone').html('1. 뒤로간다');
+			$('.subtwo').html('2. 앞으로 간다');
+			$('.subthree').html('3. 그대로 멈춘다'); 
+
+			$('.subone').removeAttr("onclick");
+			$('.subone').attr("onclick","one()");
+
+			$('.subtwo').removeAttr("onclick");
+			$('.subtwo').attr("onclick","two()");
+
+			$('.subthree').removeAttr("onclick");
+			$('.subthree').attr("onclick","three_three()");
+		}
+
+		function three_three(){
+			$('.main').html('가만히 있어도 변하는 것은 진짜로 없는듯 하다. 무엇을 할까?');
+			$('.subone').html('1. 뒤로간다');
+			$('.subtwo').html('2. 앞으로 간다');
+			$('.subthree').html('3. 그대로 멈춘다'); 
+
+			$('.subone').removeAttr("onclick");
+			$('.subone').attr("onclick","one()");
+
+			$('.subtwo').removeAttr("onclick");
+			$('.subtwo').attr("onclick","two()");
+
+			$('.subthree').removeAttr("onclick");
+			$('.subthree').attr("onclick","three_three_three()");
+		}
+
+		function three_three_three(){
+			$('.main').html('가만히 있어도 변하는 것은 진짜 진짜 없는듯 하다. 무엇을 할까?');
+			$('.subone').html('1. 뒤로간다');
+			$('.subtwo').html('2. 앞으로 간다');
+			$('.subthree').html('3. 그대로 멈춘다'); 
+
+			$('.subone').removeAttr("onclick");
+			$('.subone').attr("onclick","one()");
+
+			$('.subtwo').removeAttr("onclick");
+			$('.subtwo').attr("onclick","two()");
+
+			$('.subthree').removeAttr("onclick");
+			$('.subthree').attr("onclick","three_three_three_three()");
+		}
+
+		function three_three_three_three(){
+			$('.main').html('당신은 그대로 아무것도 안하다가 아사했다. (1/10)');
+			$('.subone').html('');
+			$('.subtwo').html('');
+			$('.subthree').html(''); 
+			$('.restart').html('다시시작?');
+			endcount[0] += 1;
+			if(endcount[0] === 1){
+				$('.ending').append('1, ');
+			}
+			$('.subone').removeAttr("onclick");
+
+			$('.subtwo').removeAttr("onclick");
+
+			$('.subone').removeAttr("onclick");
+
+		}
+
+		function one_three(){
+			$('.main').html('다시 처음으로 돌아온듯 하다. 무엇을 할까?');
+			$('.subone').html('1. 뒤로간다');
+			$('.subtwo').html('2. 앞으로 간다');
+			$('.subthree').html('3. 그대로 멈춘다');
+			$('.subfour').html('').removeClass('blue');
+
+			$('.subone').removeAttr("onclick");
+			$('.subone').attr("onclick","one()");
+
+			$('.subtwo').removeAttr("onclick");
+			$('.subtwo').attr("onclick","two()");
+
+			$('.subthree').removeAttr("onclick");
+			$('.subthree').attr("onclick","three()");
+		}
+
+		function two_one(){
+			$('.main').html('당신은 문을 열어보려 했지만 열리지 않는 것을 알게된다. 무엇을 할까?');
+			if(key >= 0){
+			$('.subone').html('1. 문을 열어본다');
+			$('.subtwo').html('2. 뒤로 돌아간다');
+			$('.subthree').html('3. 바닥을 뒤져본다.');
+
+			$('.subone').removeAttr("onclick");
+			$('.subone').attr("onclick","two_one()");
+
+			$('.subtwo').removeAttr("onclick");
+			$('.subtwo').attr("onclick","one_three()");
+
+			$('.subthree').removeAttr("onclick");
+			$('.subthree').attr("onclick","two_one_three()");
+		} else{
+			$('.main').html('문이 열린다. 무엇을 할까?');
+			$('.subone').html('1. 들어간다');
+			$('.subtwo').html('2. 뒤로 간다');
+			$('.subthree').html('');
+
+			$('.subone').removeAttr("onclick");
+			$('.subone').attr("onclick","two_one_one_one()");
+
+			$('.subtwo').removeAttr("onclick");
+			$('.subtwo').attr("onclick","one_three()");
+
+			$('.subthree').removeAttr("onclick");
+		}
+		}
+
+		function two_one_three(){
+			$('.main').html('당신을 손을 더듬다가 고리 비슷한것을 찾아낸다. 무엇을 할까?');
+			$('.subone').html('1. 당겨본다');
+			$('.subtwo').html('2. 더 찾아본다');
+			$('.subthree').html('3. 일어선다'); 
+
+			$('.subone').removeAttr("onclick");
+			$('.subone').attr("onclick","two_one_three_one()");
+
+			$('.subtwo').removeAttr("onclick");
+			$('.subtwo').attr("onclick","two_one_three_two()");
+
+			$('.subthree').removeAttr("onclick");
+			$('.subthree').attr("onclick","two_one_three_three()");
+		}
+
+		function two_one_three_one(){
+			$('.main').html('당신이 고리를 당기자 방에 물이 차들어온다. 당신은 익사했다. (2/10)');
+			$('.subone').html('');
+			$('.subtwo').html('');
+			$('.subthree').html(''); 
+			$('.restart').html('다시시작?');
+			endcount[1] += 1;
+			if(endcount[1] === 1){
+				$('.ending').append('2, ');
+			}
+
+			$('.subone').removeAttr("onclick");
+
+			$('.subtwo').removeAttr("onclick");
+
+			$('.subone').removeAttr("onclick");
+		}
+
+		function two_one_three_two(){
+			$('.main').html('이번에 당신은 발판을 찾은듯 하다. 무엇을 할까?');
+			$('.subone').html('1. 눌러본다');
+			$('.subtwo').html('2. 더 찾아본다');
+			$('.subthree').html('3. 일어선다');
+
+			$('.subone').removeAttr("onclick");
+			$('.subone').attr("onclick","two_one_three_two_one()");
+
+			$('.subtwo').removeAttr("onclick");
+			$('.subtwo').attr("onclick","two_one_three_two_two()");
+
+			$('.subthree').removeAttr("onclick");
+			$('.subthree').attr("onclick","two_one_three_three()"); 
+		}
+
+		function two_one_three_three(){
+			$('.main').html('당신은 문앞에 서있다. 무엇을 할까?');
+			$('.subone').html('1. 문을 열어본다');
+			$('.subtwo').html('2. 뒤로 돌아간다');
+			$('.subthree').html('3. 바닥을 뒤져본다');
+
+			$('.subone').removeAttr("onclick");
+			$('.subone').attr("onclick","two_one()");
+
+			$('.subtwo').removeAttr("onclick");
+			$('.subtwo').attr("onclick","one_three()");
+
+			$('.subthree').removeAttr("onclick");
+			$('.subthree').attr("onclick","two_one_three()");
+		}
+
+		function two_one_three_two_one(){
+			button += 1;
+			$('.main').html('당신이 발판을 누르니 굉장한 소리와 함께 문이 열리는 소리가 들린다.');
+			$('.subone').html('1. 일어선다');
+			$('.subtwo').html('');
+			$('.subthree').html('');
+		if(button == 1){
+			$('.collect').append('Pressure Plate, ');
+		}	
+			$('.subone').removeAttr("onclick");
+			$('.subone').attr("onclick","two_one_three_three()");
+
+			$('.subtwo').removeAttr("onclick");
+
+			$('.subthree').removeAttr("onclick");
+		}
+
+		function two_one_three_two_two(){
+			key += 1;
+			$('.main').html('땅바닥에 열쇠가 떨어져 있다.');
+			$('.subone').html('1. 줍는다');
+			$('.subtwo').html('');
+			$('.subthree').html('');
+		if(key == 1){
+			$('.collect').append('key, ');
+		}
+			$('.subone').removeAttr("onclick");
+			$('.subone').attr("onclick","two_one_three_three()");
+
+			$('.subtwo').removeAttr("onclick");
+
+			$('.subthree').removeAttr("onclick");
+		}
+
+		function two_one_one_one(){
+			$('.main').html('문을 지나자 밀실의 갑갑한 공기와는 다른 시원한 공기가 당신을 스친다. 무엇을 할까?');
+			$('.subone').html('1. 앞으로 간다');
+			$('.subtwo').html('2. 왼쪽으로 간다');
+			$('.subthree').html('3. 뒤로 돌아간다'); 
+
+			$('.subone').removeAttr("onclick");
+			$('.subone').attr("onclick","two_one_two_one()");
+
+			$('.subtwo').removeAttr("onclick");
+			$('.subtwo').attr("onclick","one_two()");
+
+			$('.subthree').removeAttr("onclick");
+			$('.subthree').attr("onclick","two_one()");
+		}
+
+		function two_one_two_one(){
+			$('.main').html('여전히 다른 시원한 공기가 당신을 스친다. 무엇을 할까?');
+			$('.subone').html('1. 앞으로 간다');
+			$('.subtwo').html('2. 왼쪽으로 간다');
+			$('.subthree').html('3. 뒤로 돌아간다');
+			$('.subfour').html('');
+
+			$('.subone').removeAttr("onclick");
+			$('.subone').attr("onclick","two_one_four_one()");
+
+			$('.subtwo').removeAttr("onclick");
+			$('.subtwo').attr("onclick","two_one_two_two()");
+
+			$('.subthree').removeAttr("onclick");
+			$('.subthree').attr("onclick","two_one_one_one()");
+		}
+
+		function two_one_four_one(){
+			$('.main').html('여전히 다른 시원한 공기가 당신을 스친다. 무엇을 할까?');
+			$('.subone').html('1. 왼쪽으로 간다');
+			$('.subtwo').html('2. 뒤로 간다');
+			$('.subthree').html('');
+
+			$('.subone').removeAttr("onclick");
+			$('.subone').attr("onclick","two_one_four_two()");
+
+			$('.subtwo').removeAttr("onclick");
+			$('.subtwo').attr("onclick","two_one_two_one()");
+
+			$('.subthree').removeAttr("onclick");
+		}
+
+		function two_one_four_two(){
+			$('.main').html('여전히 다른 시원한 공기가 당신을 스친다. 무엇을 할까?');
+			$('.subone').html('1. 왼쪽으로 간다');
+			$('.subtwo').html('2. 뒤로 간다');
+			$('.subthree').html('3. 오른쪽으로 간다');
+			$('.subfour').html('');
+
+			$('.subone').removeAttr("onclick");
+			$('.subone').attr("onclick","two_one_four_three()");
+
+			$('.subtwo').removeAttr("onclick");
+			$('.subtwo').attr("onclick","two_one_two_two()");
+
+			$('.subthree').removeAttr("onclick");
+			$('.subthree').attr("onclick", "two_one_four_one()");
+		}
+
+		function two_one_four_three(){
+			$('.main').html('여전히 다른 시원한 공기가 당신을 스친다. 무엇을 할까?');
+			$('.subone').html('1. 앞쪽으로 간다');
+			$('.subtwo').html('2. 뒤로 간다');
+			$('.subthree').html('3. 오른쪽으로 간다');
+
+			$('.subone').removeAttr("onclick");
+			$('.subone').attr("onclick","two_one_four_four()");
+
+			$('.subtwo').removeAttr("onclick");
+			$('.subtwo').attr("onclick","two_one_two_three()");
+
+			$('.subthree').removeAttr("onclick");
+			$('.subthree').attr("onclick", "two_one_four_two()");
+		}
+		function two_one_two_three(){
+			$('.main').html('여전히 다른 시원한 공기가 당신을 스친다. 무엇을 할까?');
+			$('.subone').html('1. 앞쪽으로 간다');
+			$('.subtwo').html('2. 뒤로 간다');
+			$('.subthree').html('3. 오른쪽으로 간다');
+			$('.subfour').html('');
+
+			$('.subone').removeAttr("onclick");
+			$('.subone').attr("onclick","two_one_four_three()");
+
+			$('.subtwo').removeAttr("onclick");
+			$('.subtwo').attr("onclick","two_one_one_three()");
+
+			$('.subthree').removeAttr("onclick");
+			$('.subthree').attr("onclick", "two_one_two_two()");
+		}
+
+		function two_one_one_three(){
+			$('.main').html('여전히 다른 시원한 공기가 당신을 스친다. 무엇을 할까?');
+			$('.subone').html('1. 앞쪽으로 간다');
+			$('.subtwo').html('2. 오른쪽으로 간다');
+			$('.subthree').html('');
+
+			$('.subone').removeAttr("onclick");
+			$('.subone').attr("onclick","two_one_two_three()");
+
+			$('.subtwo').removeAttr("onclick");
+			$('.subtwo').attr("onclick","two_one_one_two()");
+
+			$('.subthree').removeAttr("onclick");
+		}
+
+		function two_one_one_two(){
+			$('.main').html('여전히 다른 시원한 공기가 당신을 스친다. 무엇을 할까?');
+			$('.subone').html('1. 앞쪽으로 간다');
+			$('.subtwo').html('2. 왼쪽으로 간다');
+			$('.subthree').html('3. 오른쪽으로 간다');
+			$('.subfour').html('');
+
+			$('.subone').removeAttr("onclick");
+			$('.subone').attr("onclick","two_one_two_two()");
+
+			$('.subtwo').removeAttr("onclick");
+			$('.subtwo').attr("onclick","two_one_one_three()");
+
+			$('.subthree').removeAttr("onclick");
+			$('.subthree').attr("onclick", "two_one_one_one()");
+		}
+
+		function two_one_two_two(){
+			$('.main').html('여전히 다른 시원한 공기가 당신을 스친다. 무엇을 할까?');
+			$('.subone').html('1. 앞쪽으로 간다');
+			$('.subtwo').html('2. 왼쪽으로 간다');
+			$('.subthree').html('3. 오른쪽으로 간다');
+			$('.subfour').html('4. 뒤쪽으로 간다');
+
+			$('.subone').removeAttr("onclick");
+			$('.subone').attr("onclick","two_one_four_two()");
+
+			$('.subtwo').removeAttr("onclick");
+			$('.subtwo').attr("onclick","two_one_two_three()");
+
+			$('.subthree').removeAttr("onclick");
+			$('.subthree').attr("onclick", "two_one_two_one()");
+
+			$('.subfour').removeAttr("onclick");
+			$('.subfour').attr("onclick", "two_one_one_two()");
+		}
+
+		function two_one_four_four(){
+			$('.main').html('커다란 문이 보인다. 무엇을 할까?');
+			$('.subone').html('1. 문을 힘껏 민다');
+			$('.subtwo').html('2. 뒤로 돌아간다');
+			$('.subthree').html('');
+
+			$('.subone').removeAttr("onclick");
+			$('.subone').attr("onclick","two_one_four_four_one()");
+
+			$('.subtwo').removeAttr("onclick");
+			$('.subtwo').attr("onclick","two_one_four_three()");
+
+			$('.subthree').removeAttr("onclick");
+
+		}
+
+		function two_one_four_four_one(){
+			$('.main').html('문을 열자 커다란 개가 당신의 앞에 서있는 것을 본다. 무엇을 할까?');
+			$('.subone').html('1. 힘껏 달린다');
+			$('.subtwo').html('2. 조심히 돌아간다');
+			$('.subthree').html('3. 뒤로 돌아간다	');
+
+			$('.subone').removeAttr("onclick");
+			$('.subone').attr("onclick","two_one_four_four_two()");
+
+			$('.subtwo').removeAttr("onclick");
+			$('.subtwo').attr("onclick","two_one_four_four_three()");
+
+			$('.subthree').removeAttr("onclick");
+			$('.subthree').attr("onclick", "two_one_four_four_four()");
+		}
+		function two_one_four_four_three(){
+			$('.main').html('개가 당신과의 거리가 가까워지자 개가 당신을 물었다. 당신은 물려 죽었다. (3/10)');
+			$('.subone').html('');
+			$('.subtwo').html('');
+			$('.subthree').html(''); 
+			$('.restart').html('다시시작?');
+			endcount[2] += 1;
+			if(endcount[2] === 1){
+				$('.ending').append('3, ');
+			}
+
+			$('.subone').removeAttr("onclick");
+
+			$('.subtwo').removeAttr("onclick");
+
+			$('.subthree').removeAttr("onclick");
+		}
+
+		function two_one_four_four_four(){
+			$('.main').html('당신이 개에게 등을 보이자 개가 당신을 물었다. 당신은 물려 죽었다. (4/10)');
+			$('.subone').html('');
+
+			$('.subtwo').html('');
+			$('.subthree').html(''); 
+			$('.restart').html('다시시작?');
+			endcount[3] += 1;
+			if(endcount[3] == 1){
+				$('.ending').append('4, ');
+			}
+
+			$('.subone').removeAttr("onclick");
+
+			$('.subtwo').removeAttr("onclick");
+
+			$('.subthree').removeAttr("onclick");
+		}
+
+		function two_one_four_four_two(){
+			$('.main').html('당신이 힘껏 달리자 개가 쫓아온다. 무엇을 할까?');
+			$('.subone').html('1. 그대로 멈춘다');
+			$('.subtwo').html('2. 계속 달린다');
+			$('.subthree').html('3. 오른쪽으로 꺾는다'); 
+
+			$('.subone').removeAttr("onclick");
+			$('.subone').attr("onclick","two_two_one()");
+
+			$('.subtwo').removeAttr("onclick");
+			$('.subtwo').attr("onclick","two_two_two()");
+
+			$('.subthree').removeAttr("onclick");
+			$('.subthree').attr("onclick", "two_two_three_one()");
+		}
+
+		function two_two_three_one(){
+			$('.main').html('당신이 들어온 문이 보인다. 무엇을 할까?');
+			$('.subone').html('1. 들어간다');
+			$('.subtwo').html('2. 뒤로 돌아본다');
+			$('.subthree').html(''); 
+
+			$('.subone').removeAttr("onclick");
+			$('.subone').attr("onclick","two_one_four_four()");
+
+			$('.subtwo').removeAttr("onclick");
+			$('.subtwo').attr("onclick","two_two_three_two()");
+
+			$('.subthree').removeAttr("onclick");
+			$('.subthree').attr("onclick", "two_two_three_one()");
+		}
+
+		function two_two_three_two(){
+			$('.main').html('뒤를 돌아보니 개가 당신의 앞을 지키고 있었다. (5/10)');
+			$('.subone').html('');
+
+			$('.subtwo').html('');
+			$('.subthree').html(''); 
+			$('.restart').html('다시시작?');
+			endcount[4] += 1;
+			if(endcount[4] ===1){
+				$('.ending').append('5, ');
+			}
+
+
+			$('.subone').removeAttr("onclick");
+
+			$('.subtwo').removeAttr("onclick");
+
+			$('.subthree').removeAttr("onclick");
+		}
+
+		function two_two_one(){
+			if( stick >= 1){
+				$('.main').html('당신이 멈추자 개가 당신앞에서 으르렁거리며 속도를 낮춘다. 무엇을 할까?');
+				$('.subone').html('1. 개와 교감을 시도한다');
+				$('.subtwo').html('2. 개를 때린다');
+				$('.subthree').html('3. (특수 선택지) 막대기를 던진다').addClass('blue'); 
+
+				$('.subone').removeAttr("onclick");
+				$('.subone').attr("onclick","two_two_two_one()");
+
+				$('.subtwo').removeAttr("onclick");
+				$('.subtwo').attr("onclick","two_two_two_two()");
+
+				$('.subthree').removeAttr("onclick");
+				$('.subthree').attr("onclick", "two_two_two_three()");
+
+			} else{
+				
+		
+				$('.main').html('당신이 멈추자 개가 당신앞에서 으르렁거리며 속도를 낮춘다. 무엇을 할까?');
+				$('.subone').html('1. 개와 교감을 시도한다');
+				$('.subtwo').html('2. 개를 때린다');
+				$('.subthree').html('3. 막대기를 던진다(막대기 필요)').addClass('line'); 
+			
+				$('.subone').removeAttr("onclick");
+				$('.subone').attr("onclick","two_two_two_one()");
+
+				$('.subtwo').removeAttr("onclick");
+				$('.subtwo').attr("onclick","two_two_two_two()");
+
+				$('.subthree').removeAttr("onclick");
+		
+			}
+		}
+
+		function two_two_two(){
+			$('.main').html('당신은 개가 당신보다 빠르다는 것을 몸으로 느꼈다. (6/10)');
+			$('.subone').html('');
+
+			$('.subtwo').html('');
+			$('.subthree').html(''); 
+			$('.restart').html('다시시작?');
+			endcount[5] += 1;
+			if(endcount[5] === 1){
+				$('.ending').append('6, ');
+			}
+
+			$('.subone').removeAttr("onclick");
+
+			$('.subtwo').removeAttr("onclick");
+
+			$('.subthree').removeAttr("onclick");
+		}
+
+		function two_two_two_one(){
+			$('.main').html('개는 당신의 언어를 모르는 듯 하다. (7/10)');
+			$('.subone').html('');
+			$('.subtwo').html('');
+			$('.subthree').html('').removeClass('line').removeClass('blue'); 
+			$('.restart').html('다시시작?');
+			endcount[6] += 1;
+			if(endcount[6] === 1){
+				$('.ending').append('7, ');
+			}
+
+			$('.subone').removeAttr("onclick");
+
+			$('.subtwo').removeAttr("onclick");
+
+			$('.subthree').removeAttr("onclick");
+
+		}
+
+		function two_two_two_two(){
+			$('.main').html('당신은 개를 때리기로 마음 먹었다. 어디를 때릴까?');
+			$('.subone').html('1. 머리');
+			$('.subtwo').html('2. 다리');
+			$('.subthree').html('3. 등').removeClass('line').removeClass('blue');
+
+			$('.subone').removeAttr("onclick");
+			$('.subone').attr("onclick","two_two_two_two_one()");
+
+			$('.subtwo').removeAttr("onclick");
+			$('.subtwo').attr("onclick","two_two_two_two_two()");
+
+			$('.subthree').removeAttr("onclick");
+			$('.subthree').attr("onclick", "two_two_two_two_three()");
+		}
+
+		function two_two_two_two_one(){
+			$('.main').html('당신이 머리를 때리려고 하자 놀란 개가 당신을 물었다. (9/10)');
+			$('.subone').html('');
+			$('.subtwo').html('');
+			$('.subthree').html(''); 
+			$('.restart').html('다시시작?');
+			endcount[8] += 1;
+			if(endcount[8] === 1){
+				$('.ending').append('9, ');
+			}
+
+			$('.subone').removeAttr("onclick");
+
+			$('.subtwo').removeAttr("onclick");
+
+			$('.subthree').removeAttr("onclick");
+		}
+
+		function two_two_two_two_two(){
+			$('.main').html('당신이 다리를 때리자 개가 절뚝거리며 당신에게 달려온다. 무엇을 할까?');
+			$('.subone').html('1. 출구를 향해 달린다.');
+			$('.subtwo').html('');
+			$('.subthree').html('');
+
+			$('.subone').removeAttr("onclick");
+			$('.subone').attr("onclick", "five_one()");
+
+			$('.subtwo').removeAttr("onclick");
+
+			$('.subthree').removeAttr("onclick");
+		}
+
+		function two_two_two_two_three(){
+			$('.main').html('등을 맞은 개가 화가나서 더욱 빨리 달려온다. (8/10)');
+			$('.subone').html('');
+			$('.subtwo').html('');
+			$('.subthree').html(''); 
+			$('.restart').html('다시시작?');
+			endcount[7] += 1;
+			if(endcount[7] === 1){
+				$('.ending').append('8, ');
+			}
+
+			$('.subone').removeAttr("onclick");
+
+			$('.subtwo').removeAttr("onclick");
+
+			$('.subthree').removeAttr("onclick");
+		}
+
+		function five_one(){
+			$('.main').html('출구가 당신 앞에 있다. 무엇을 할까?');
+			$('.subone').html('1. 탈출한다.');
+			$('.subtwo').html('');
+			$('.subthree').html('');
+
+			$('.subone').removeAttr("onclick");
+			$('.subone').attr("onclick", "normalEnding()");
+
+			$('.subtwo').removeAttr("onclick");
+
+			$('.subthree').removeAttr("onclick");
+		}
+
+		function normalEnding(){
+			$('.main').html('당신은 출구를 열고탈출했다.');
+			$('.subone').html('1. 다음으로');
+			$('.subtwo').html('');
+			$('.subthree').html('');
+
+			$('.subone').removeAttr("onclick");
+			$('.subone').attr("onclick", "normalEnding_one()");
+
+			$('.subtwo').removeAttr("onclick");
+
+			$('.subthree').removeAttr("onclick");
+		}
+
+		function normalEnding_one(){
+			$('.main').html('당신이 출구를 열고 달리자 당신이 갖혀있던 곳이 멀어지는 것이 보인다.');
+			$('.subone').html('1. 다음으로');
+			$('.subtwo').html('');
+			$('.subthree').html('');
+
+			$('.subone').removeAttr("onclick");
+			$('.subone').attr("onclick", "normalEnding_two()");
+
+			$('.subtwo').removeAttr("onclick");
+
+			$('.subthree').removeAttr("onclick");
+		}
+
+		function normalEnding_two(){
+			$('.main').html('당신의 뒤가 서늘해지는 것을 느낀다.');
+			$('.subone').html('1. 다음으로');
+			$('.subtwo').html('');
+			$('.subthree').html('');
+
+			$('.subone').removeAttr("onclick");
+			$('.subone').attr("onclick", "normalEnding_three()");
+
+			$('.subtwo').removeAttr("onclick");
+
+			$('.subthree').removeAttr("onclick");
+		}
+
+		function normalEnding_three(){
+			$('.main').html('뒤에는 스나이퍼가 있었다....');
+			$('.subone').html('1. 다음으로');
+			$('.subtwo').html('');
+			$('.subthree').html('');
+
+			$('.subone').removeAttr("onclick");
+			$('.subone').attr("onclick", "normalEnding_four()");
+
+			$('.subtwo').removeAttr("onclick");
+
+			$('.subthree').removeAttr("onclick");
+		}
+
+		function normalEnding_four(){
+			$('.main').html('축하합니다. 게임을 클리어 하셨습니다. (1/3)');
+			$('.subone').html('1. 다시하기');
+			$('.subtwo').html('');
+			$('.subthree').html('');
+			$('.end').append('normalEnding, ');
+
+			$('.subone').removeAttr("onclick");
+			$('.subone').attr("onclick", "main()");
+
+			$('.subtwo').removeAttr("onclick");
+
+			$('.subthree').removeAttr("onclick");
+		}
+
+		function two_two_two_three(){
+			$('.main').html('막대기를 던지자 개가 멀리 달려간다.');
+			$('.subone').html('1. 이 장소를 수색한다');
+			$('.subtwo').html('');
+			$('.subthree').html('');
+
+			$('.subone').removeAttr("onclick");
+			$('.subone').attr("onclick", "two_two_two_three_one()");
+
+			$('.subtwo').removeAttr("onclick");
+
+			$('.subthree').removeAttr("onclick");
+		}
+
+		function two_two_two_three_one(){
+			$('.main').html('어디부터 수색해볼까?');
+			$('.subone').html('1. 앞에 보이는 벽');
+			$('.subtwo').html('2. 풀숲').removeClass('blue').removeClass('line');
+			$('.subthree').html('3. 나무 위');
+
+			$('.subone').removeAttr("onclick");
+			$('.subone').attr("onclick", "two_two_two_three_one_one()");
+
+			$('.subtwo').removeAttr("onclick");
+			$('.subtwo').attr("onclick", "two_two_two_three_one_two()");
+
+			$('.subthree').removeAttr("onclick");
+			$('.subthree').attr("onclick", "two_two_two_three_one_three()");
+		}
+
+		function two_two_two_three_one_one(){
+			$('.main').html('벽은 그냥 벽인듯 하다.');
+			$('.subone').html('1. 돌아간다');
+			$('.subtwo').html('');
+			$('.subthree').html('');
+
+			$('.subone').removeAttr("onclick");
+			$('.subone').attr("onclick", "two_two_two_three_one()");
+
+			$('.subtwo').removeAttr("onclick");
+
+			$('.subthree').removeAttr("onclick");
+		}
+
+		function two_two_two_three_one_two(){
+			$('.main').html('풀숲속에 당신이 지나갈 수 있을만한 굴이 하나 보인다.');
+			$('.subone').html('1. 들어간다');
+			$('.subtwo').html('2. 돌아간다');
+			$('.subthree').html('');
+
+			$('.subone').removeAttr("onclick");
+			$('.subone').attr("onclick", "specialEnding()");
+
+			$('.subtwo').removeAttr("onclick");
+			$('.subtwo').attr("onclick", "two_two_two_three_one()");
+
+			$('.subthree').removeAttr("onclick");
+		}
+
+		function two_two_two_three_one_three(){
+			$('.main').html('나무위에 올라가도 어두워서 앞이 보이지 않는다.');
+			if(telescope >= 1){
+				$('.subone').html('1. 내려간다');
+				$('.subtwo').html('2. (특수 선택지) 망원경을 사용한다.').addClass('blue');
+				$('.subthree').html('');
+
+				$('.subone').removeAttr("onclick");
+				$('.subone').attr("onclick", "two_two_two_three_one()");
+
+				$('.subtwo').removeAttr("onclick");
+				$('.subtwo').attr("onclick", "ten()");
+
+				$('.subthree').removeAttr("onclick");
+			} else{
+				$('.subone').html('1. 내려간다');
+				$('.subtwo').html('2. 망원경을 사용한다.(망원경 필요)').addClass('line');
+				$('.subthree').html('');
+
+				$('.subone').removeAttr("onclick");
+				$('.subone').attr("onclick", "two_two_two_three_one()");
+
+				$('.subtwo').removeAttr("onclick");
+
+				$('.subthree').removeAttr("onclick");
+			}
+		}
+
+		function ten(){
+			$('.main').html('망원경으로 보자 탈출구가 보인다.');
+			$('.subone').html('1. 더 자세히 본다');
+			$('.subtwo').html('2. 돌아간다').removeClass('blue');
+			$('.subthree').html('');
+
+			$('.subone').removeAttr("onclick");
+			$('.subone').attr("onclick", "ten_one()");
+
+			$('.subtwo').removeAttr("onclick");
+			$('.subtwo').attr("onclick", "two_two_two_three_one()");
+
+			$('.subthree').removeAttr("onclick");
+		}
+
+		function ten_one(){
+			$('.main').html('탈출구를 보니 무언가의 실루엣이 보인다. 손에 무언가를 들고 있다.');
+			$('.subone').html('1. 더 자세히 본다');
+			$('.subtwo').html('2. 돌아간다');
+			$('.subthree').html('');
+
+			$('.subone').removeAttr("onclick");
+			$('.subone').attr("onclick", "ten_two()");
+
+			$('.subtwo').removeAttr("onclick");
+			$('.subtwo').attr("onclick", "two_two_two_three_one()");
+
+			$('.subthree').removeAttr("onclick");
+		}
+
+		function ten_two(){
+			$('.main').html('더 자세히 보니 당신을 조준하고 있는 스나이퍼였다. (10/10)');
+			$('.subone').html('');
+			$('.subtwo').html('');
+			$('.subthree').html('');
+			$('.restart').html('다시시작?');
+			endcount[9] += 1;
+			if(endcount[9] === 1){
+				$('.ending').append('10, ');
+			}
+
+			$('.subone').removeAttr("onclick");
+
+			$('.subtwo').removeAttr("onclick");
+
+			$('.subthree').removeAttr("onclick");
+		}
+
+		function specialEnding(){
+			$('.main').html('당신은 불안한 마음을 붙잡고 굴을 기어서 통과한다.');
+			$('.subone').html('1. 다음으로');
+			$('.subtwo').html('');
+			$('.subthree').html('');
+
+			$('.subone').removeAttr("onclick");
+			$('.subone').attr("onclick", "specialEnding_one()");
+
+			$('.subtwo').removeAttr("onclick");
+
+			$('.subthree').removeAttr("onclick");
+		}
+
+		function specialEnding_one(){
+			$('.main').html('굴을 기어서 통과하자 짠 바다내음이 풍겨온다....');
+			$('.subone').html('1. 다음으로');
+			$('.subtwo').html('');
+			$('.subthree').html('');
+
+			$('.subone').removeAttr("onclick");
+			$('.subone').attr("onclick", "specialEnding_two()");
+
+			$('.subtwo').removeAttr("onclick");
+
+			$('.subthree').removeAttr("onclick");
+		}
+
+		function specialEnding_two(){
+			$('.main').html('축하합니다. 게임을 클리어 하셨습니다. (2/3)');
+			$('.subone').html('1. 다시하기');
+			$('.subtwo').html('');
+			$('.subthree').html('');
+			$('.end').append('specialEnding, ');
+
+			$('.subone').removeAttr("onclick");
+			$('.subone').attr("onclick", "main()");
+
+			$('.subtwo').removeAttr("onclick");
+
+			$('.subthree').removeAttr("onclick");
+		}
+
+		function hiddenEnding(){
+			$('body').css('background-color','#bfbfbf');
+			$('.main').html('당신은 뒤로 들어오자 몸이 무거워지는 것을 느낀다.');
+			$('.subone').html('1. 다음으로');
+			$('.subtwo').html('');
+			$('.subthree').html('');
+			$('.subfour').html('').removeClass('blue');
+
+			$('.subone').removeAttr("onclick");
+			$('.subone').attr("onclick", "hiddenEnding_two()");
+
+			$('.subtwo').removeAttr("onclick");
+
+			$('.subthree').removeAttr("onclick");
+		}
+
+		function hiddenEnding_two(){
+			$('body').css('background-color','#959595');
+			$('.main').html('당신의 몸에서 점점 힘이 빠져나가는 것을 당신은 느낀다.');
+			$('.subone').html('1. 다음으로');
+			$('.subtwo').html('');
+			$('.subthree').html('');
+			$('.subfour').html('');
+
+			$('.subone').removeAttr("onclick");
+			$('.subone').attr("onclick", "hiddenEnding_three()");
+
+			$('.subtwo').removeAttr("onclick");
+
+			$('.subthree').removeAttr("onclick");
+		}
+
+		function hiddenEnding_three(){
+			$('body').css('background-color','#666666');
+			$('.main').html('당신은 몸을 지탱할 힘조차 사라졌다.');
+			$('.subone').html('1. 다음으로');
+			$('.subtwo').html('');
+			$('.subthree').html('');
+			$('.subfour').html('');
+
+			$('.subone').removeAttr("onclick");
+			$('.subone').attr("onclick", "hiddenEnding_four()");
+
+			$('.subtwo').removeAttr("onclick");
+
+			$('.subthree').removeAttr("onclick");
+		}
+
+		function hiddenEnding_three(){
+			$('body').css('background-color','red');
+			$('.main').html('당신의 눈앞이 보이지 않게 된다.');
+			$('.subone').html('1. 다음으로');
+			$('.subtwo').html('');
+			$('.subthree').html('');
+			$('.subfour').html('');
+
+			$('.subone').removeAttr("onclick");
+			$('.subone').attr("onclick", "hiddenEnding_four()");
+
+			$('.subtwo').removeAttr("onclick");
+
+			$('.subthree').removeAttr("onclick");
+		}
+
+		function hiddenEnding_four(){
+			$('body').css('background-color','#93000b');
+			$('.main').html('당신은 이제부터 선택지를 볼 수 없게 된다.');
+			$('.subone').html('1. 다음으로');
+			$('.subtwo').html('');
+			$('.subthree').html('');
+			$('.subfour').html('');
+
+			$('.subone').removeAttr("onclick");
+			$('.subone').attr("onclick", "hiddenEnding_five()");
+
+			$('.subtwo').removeAttr("onclick");
+
+			$('.subthree').removeAttr("onclick");
+		}
+
+		function hiddenEnding_five(){
+			$('body').css('background-color','black');
+			$('.main').html('당신은 이제부터 선택지를 볼 수 없게 된다.');
+			$('.main').css('color','white');
+			$('.subone').html('1. 다음으로');
+			$('.subtwo').html('');
+			$('.subthree').html('');
+			$('.subfour').html('');
+
+			$('.subone').removeAttr("onclick");
+			$('.subone').attr("onclick", "hiddenEnding_five()");
+
+			$('.subtwo').removeAttr("onclick");
+
+			$('.subthree').removeAttr("onclick");
+		}
+	</script>
+</body>
+</html>
+
+<!-- 
+			$('.main').html('');
+			$('.subone').html('');
+			$('.subtwo').html('');
+			$('.subthree').html(''); 
+
+			$('.subone').removeAttr("onclick");
+			$('.subone').attr("onclick","one_one()");
+
+			$('.subtwo').removeAttr("onclick");
+			$('.subtwo').attr("onclick","one_two()");
+
+			$('.subthree').removeAttr("onclick");
+			$('.subthree').attr("onclick","one_three()");
+
+-->
